@@ -22,13 +22,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - run: echo "build.txt" | Out-File -FilePath "build.txt"
+    - name: Building in VB6 VM
+      run: echo "build.txt" | Out-File -FilePath "build.txt"
+
+    - name: Waiting build result
     - run: while (!(Test-Path "compile.log")) { Start-Sleep -Seconds 5}
       timeout-minutes: 20
 
-    - run: Get-Content "compile.log"
-    - run: if (!(Test-path "ECB-Cont.exe")) { Write-Error "Workflow failed, check the VB6 compile.log file"; exit 1 }
-    - run: if ((Test-path "C:\Runners\ECB_Cont\_work\ecb_cont\")) { Get-ChildItem "C:\Runners\ECB_Cont\_work\ecb_cont\" | Remove-Item -Recurse -Force }
+    - name : Get build result
+      run: Get-Content "compile.log"
+      
+    - name : Check artifact
+      run: if (!(Test-path "ECB-Cont.exe")) { Write-Error "Workflow failed, check the VB6 compile.log file"; exit 1 }
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4.6.0
@@ -36,4 +41,6 @@ jobs:
         name: vb6-executable
         path: ECB-Cont.exe
 
+    - name : Clean workspace
+      run: if ((Test-path "C:\Runners\ECB_Cont\_work\ecb_cont\")) { Get-ChildItem "C:\Runners\ECB_Cont\_work\ecb_cont\" | Remove-Item -Recurse -Force }
         
