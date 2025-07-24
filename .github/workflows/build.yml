@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v4
 
     - run: echo "build.txt" | Out-File -FilePath "build.txt"
-    - run: while ("Test-Path("compile.log")) { Start-Sleep -Seconds 5}
+    - run: while (!(Test-Path("compile.log")) { Start-Sleep -Seconds 5}
       timeout-minutes: 20
 
     - run: Get-Content "compile.log"
