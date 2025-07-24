@@ -31,7 +31,7 @@ jobs:
     - name : Check build result
       run: |
         Get-Content "compile.log"
-        run: if (!(Test-path "ECB-Cont.exe")) { Write-Error "Workflow failed, check the VB6 compile.log file"; exit 1 }
+        if (!(Test-path "ECB-Cont.exe")) { Write-Error "Workflow failed, check the VB6 compile.log file"; exit 1 }
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4.6.0
