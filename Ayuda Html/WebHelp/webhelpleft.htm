@@ -1,0 +1,344 @@
+<html>
+<head>
+<title>EcbCont - Sistema Contable</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+<style type="text/css"> 
+<!-- 
+.selected {font-weight: normal;background-color: #E2E2E2;padding:0px,2px,0px,2px;}
+.unselected { font-weight: normal;padding:0px,2px,0px,2px;}
+.hand { cursor: hand; }
+.p {height: 16px;width: 16px;vertical-align: middle;border: 0;}
+div,body { font-family: Tahoma, Verdana; font-size: 11px; }
+A:link {text-decoration: none; color:#000000}
+A:visited {text-decoration: none; color: #000000}
+A:active {text-decoration: none; color: #000000 }
+A:hover {text-decoration: none; color: #FF0000 }
+
+-->
+</style>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var cl,pn,pm,bl;
+var path = 'icons/';
+var pos = 0;
+var icon;
+var tar = 'content';
+var display;
+var imgi;
+var AutoCollapse;
+var LastSelected = 0;
+var loaded = false;
+var max;
+var divlist;
+
+function SetEnv(v,a){
+
+if(v==0){ 
+	pn = [['daplus.gif','daminus.gif'],['tplus.gif','tminus.gif'],['uaplus.gif','uaminus.gif'],['splus.gif','sminus.gif']];
+	PreloadImg('downangle.gif','tshaped.gif','upangle.gif','sline.gif','daplus.gif','daminus.gif','tplus.gif','tminus.gif','uaplus.gif','uaminus.gif','splus.gif','sminus.gif','blank.gif','line.gif');
+}else{
+	pn = [['plus.gif','minus.gif']];
+	PreloadImg('plus.gif','minus.gif','blank.gif');
+
+}
+AutoCollapse = a;
+}
+
+ function PreloadImg(){
+if (document.images) { 
+	var imgs = PreloadImg.arguments; 
+	var pload = new Array();
+	for (var i=0; i<imgs.length; i++) { 
+		pload[i] = new Image; 
+		pload[i].src = path + imgs; 
+	} 
+} 
+ } 
+
+function get(o){
+var x;
+if(document.all) x=document.all[o]; 
+if(document.getElementById) x=document.getElementById(o);
+
+return x;
+}
+
+
+function pnImg(img){
+var i,j;
+for(i=0;i<=3;i++){
+	for(j=0;j<=1;j++){
+	if(img.substr(img.lastIndexOf('/') + 1)== pn[i][j]){
+		return i;
+	}
+	}
+}
+}
+function icon(img){
+var f;
+f = img.substr(img.lastIndexOf('/') + 1);
+if( f=='1.gif' || f=='2.gif'){
+	return ['1.gif','2.gif'];
+}
+if( f=='3.gif' || f=='4.gif'){
+	return ['3.gif','4.gif'];
+}
+if( f=='5.gif' || f=='6.gif'){
+	return ['5.gif','6.gif'];
+}
+if( f=='7.gif' || f=='8.gif'){
+	return ['7.gif','8.gif'];
+}
+return [f,f];
+}
+
+function show(id){
+get('d' + id).style.display='block';
+if(get('imgn' + id )) get('imgn' + id ).src= path + pn[pnImg(get('imgn' + id ).src)][1];
+get('img' + id ).src= path + icon(get('img' + id ).src)[1];
+
+}
+
+function collapse(id){
+get('d' + id ).style.display='none';
+if(get('imgn' + id )) get('imgn' + id ).src= path + pn[pnImg(get('imgn' + id ).src)][0];
+get('img' + id ).src= path + icon(get('img' + id ).src)[0];
+
+}
+
+function collapseAll(){
+var i;
+var o;
+for(i=0;i<=divlist.length-1;i++){
+	if(o=get('d' + divlist[i])){
+		if(o.style.display!='none'){ 
+			collapse(divlist[i]);
+		}
+	}
+}
+}
+
+function unselectAll(){
+var i=0;
+while(get("l" + i)){
+	get("l" + i).className = "unselected";
+	i++;
+}
+}
+
+function showParent(ele){
+var e;
+e = ele.parentNode;
+
+if(e==null) return;
+
+if(e.nodeName == 'DIV'){
+	if(e.id!='') show(e.id.substring(1,e.id.length ));
+}else if(e.nodeName == 'A'){
+
+}
+showParent(e);
+}
+
+function showNode(index){
+showParent(get("l" + index));
+LinkClick(index);
+}
+
+function selectNode(index){
+showParent(get("l" + index));
+LinkClick(index);
+}
+
+
+function NodeClick(id){
+if(get('d' + id ).style.display=='none'){
+	show(id);
+}else{
+	collapse(id);
+}
+return false;
+}
+
+function LinkDblClick(id){
+if(!AutoCollapse){
+	if(get('d' + id ).style.display=='none'){
+		show(id);
+	}else{
+		collapse(id);
+	}
+}
+return false;
+}
+
+function LinkClick(index,hasChild,r){
+if(AutoCollapse && hasChild){
+	if(get('d' + index ).style.display=='none'){
+		collapseAll()
+		showParent(get('l' + index));
+		show(index);
+	}else{
+		collapseAll()
+		showParent(get('l' + index));	
+		collapse(index);
+	}
+}
+get('l' + LastSelected).className = "unselected";
+get('l' + index).className = "selected";
+LastSelected = index;
+return r;
+}
+
+function body_onmousemove(event){
+if(typeof(document.body.scrollTop)!='undefined'){
+if(parseInt(event.clientX)<5){
+window.scroll(0,document.body.scrollTop);}}
+if(typeof(window.scrollY)!='undefined'){
+if(parseInt(event.clientX)<5){
+window.scrollTo(0,window.scrollY);}}
+}
+
+window.defaultStatus = '';
+
+//-->
+</SCRIPT>
+<style type="text/css"> 
+<!-- 
+BODY {
+scrollbar-face-color:#DCDBD6;
+scrollbar-highlight-color:#DFDFDF;
+scrollbar-3dlight-color:#DCDBD6;
+scrollbar-darkshadow-color:#000000;
+scrollbar-shadow-color:#DFDFDF;
+scrollbar-arrow-color:#EFEFEF;
+scrollbar-track-color:#EFEFEF;
+}
+-->
+</style>
+
+
+</head>
+
+<body bgcolor="#ffffff" leftmargin="5" topmargin="5" marginwidth="5" marginheight="5" onmousemove="body_onmousemove(event);" onload="loaded = true;">
+<!--BEGINBAR-->
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+<tr align="center" bgcolor="#E1E1E1"> 
+<td width="50%"><font size="2"><strong>Contents</strong></font></td>
+<td width="50%"><font size="2"><a href="webhelpindex.htm">Index</a></font></td>
+</tr>
+</table>
+<br>
+<!--ENDBAR-->
+<div id="loading"><font color="#FF0000" size="1"> Loading table of contents... 
+</font><br><br></div>
+<script>SetEnv(0,false)</script><div><nobr><img src="icons/downangle.gif" class="p"><a href="scr/EcbCont v1.0.htm" onclick="return LinkClick('0',false,true)" target="content" title=" EcbCont v1.0" onmousemove="window.status='EcbCont v1.0'"><img src="icons/1.gif" class="p"> <span id="l0" class="unselected">EcbCont v1.0</span></a></nobr></div>
+<div><nobr><img src="icons/tshaped.gif" class="p"><a href="scr/Objetivos.htm" onclick="return LinkClick('1',false,true)" target="content" title=" Objetivo" onmousemove="window.status='Objetivo'"><img src="icons/1.gif" class="p"> <span id="l1" class="unselected">Objetivo</span></a></nobr></div>
+<div><nobr><img src="icons/tshaped.gif" class="p"><a href="scr/Estandares del sistema.htm" onclick="return LinkClick('2',false,true)" target="content" title=" Estandares del sistema" onmousemove="window.status='Estandares del sistema'"><img src="icons/1.gif" class="p"> <span id="l2" class="unselected">Estandares del sistema</span></a></nobr></div>
+<div><nobr><img src="icons/tshaped.gif" class="p"><a href="scr/Teclas funcionales.htm" onclick="return LinkClick('3',false,true)" target="content" title=" Teclas funcionales" onmousemove="window.status='Teclas funcionales'"><img src="icons/1.gif" class="p"> <span id="l3" class="unselected">Teclas funcionales</span></a></nobr></div>
+<div><nobr><img src="icons/tshaped.gif" class="p"><a href="scr/Acceso al sistema.htm" onclick="return LinkClick('4',false,true)" target="content" title=" Acceso al sistema" onmousemove="window.status='Acceso al sistema'"><img src="icons/1.gif" class="p"> <span id="l4" class="unselected">Acceso al sistema</span></a></nobr></div>
+<div><nobr><a href="#" onClick="return NodeClick('5')"><img id="imgn5" src="icons/uaplus.gif" class="p"></a><a href="scr/Menus Principales.htm" onclick="return LinkClick('5',true,true)" onDblClick="return LinkDblClick('5')" target="content" title="Menus Principales" onmousemove="window.status='Menus Principales'"><img id="img5" src="icons/1.gif" class="p"> <span id="l5" class="unselected">Menus Principales</span></a></nobr></div>
+<div id="d5" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('6')"><img id="imgn6" src="icons/tplus.gif" class="p"></a><a href="scr/Configuración.htm" onclick="return LinkClick('6',true,true)" onDblClick="return LinkDblClick('6')" target="content" title="Configuración" onmousemove="window.status='Configuración'"><img id="img6" src="icons/1.gif" class="p"> <span id="l6" class="unselected">Configuración</span></a></nobr></div>
+<div id="d6" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Plan de Cuentas.htm" onclick="return LinkClick('7',false,true)" target="content" title=" Plan de Cuentas" onmousemove="window.status='Plan de Cuentas'"><img src="icons/11.gif" class="p"> <span id="l7" class="unselected">Plan de Cuentas</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Centro de Costos.htm" onclick="return LinkClick('8',false,true)" target="content" title=" Centro de Costos" onmousemove="window.status='Centro de Costos'"><img src="icons/11.gif" class="p"> <span id="l8" class="unselected">Centro de Costos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Libros.htm" onclick="return LinkClick('9',false,true)" target="content" title=" Libros" onmousemove="window.status='Libros'"><img src="icons/11.gif" class="p"> <span id="l9" class="unselected">Libros</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('10')"><img id="imgn10" src="icons/tplus.gif" class="p"></a><a href="scr/Mantenimiento Entidades.htm" onclick="return LinkClick('10',true,true)" onDblClick="return LinkDblClick('10')" target="content" title="Entidades" onmousemove="window.status='Entidades'"><img id="img10" src="icons/1.gif" class="p"> <span id="l10" class="unselected">Entidades</span></a></nobr></div>
+<div id="d10" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Tipos de Entidad.htm" onclick="return LinkClick('11',false,true)" target="content" title=" Tipos de Entidad" onmousemove="window.status='Tipos de Entidad'"><img src="icons/11.gif" class="p"> <span id="l11" class="unselected">Tipos de Entidad</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Entidad - Documento.htm" onclick="return LinkClick('12',false,true)" target="content" title=" Entidad - Documento" onmousemove="window.status='Entidad - Documento'"><img src="icons/11.gif" class="p"> <span id="l12" class="unselected">Entidad - Documento</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Entidades.htm" onclick="return LinkClick('13',false,true)" target="content" title=" Entidades" onmousemove="window.status='Entidades'"><img src="icons/11.gif" class="p"> <span id="l13" class="unselected">Entidades</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Tipos de Documento.htm" onclick="return LinkClick('14',false,true)" target="content" title=" Tipos de Documento" onmousemove="window.status='Tipos de Documento'"><img src="icons/11.gif" class="p"> <span id="l14" class="unselected">Tipos de Documento</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('15')"><img id="imgn15" src="icons/tplus.gif" class="p"></a><a href="scr/Tablas Secundarias.htm" onclick="return LinkClick('15',true,true)" onDblClick="return LinkDblClick('15')" target="content" title="Tablas Secundarias" onmousemove="window.status='Tablas Secundarias'"><img id="img15" src="icons/1.gif" class="p"> <span id="l15" class="unselected">Tablas Secundarias</span></a></nobr></div>
+<div id="d15" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Percepciones.htm" onclick="return LinkClick('16',false,true)" target="content" title=" Percepciones" onmousemove="window.status='Percepciones'"><img src="icons/11.gif" class="p"> <span id="l16" class="unselected">Percepciones</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Retenciones.htm" onclick="return LinkClick('17',false,true)" target="content" title=" Retenciones" onmousemove="window.status='Retenciones'"><img src="icons/11.gif" class="p"> <span id="l17" class="unselected">Retenciones</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Perfiles.htm" onclick="return LinkClick('18',false,true)" target="content" title=" Perfiles" onmousemove="window.status='Perfiles'"><img src="icons/11.gif" class="p"> <span id="l18" class="unselected">Perfiles</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Tipos de ratios.htm" onclick="return LinkClick('19',false,true)" target="content" title=" Tipos de ratios" onmousemove="window.status='Tipos de ratios'"><img src="icons/11.gif" class="p"> <span id="l19" class="unselected">Tipos de ratios</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Tipos de documentos de identidad.htm" onclick="return LinkClick('20',false,true)" target="content" title=" Tipos de documentos de identidad" onmousemove="window.status='Tipos de documentos de identidad'"><img src="icons/11.gif" class="p"> <span id="l20" class="unselected">Tipos de documentos de identidad</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Tipos de Moneda.htm" onclick="return LinkClick('21',false,true)" target="content" title=" Tipos de Moneda" onmousemove="window.status='Tipos de Moneda'"><img src="icons/11.gif" class="p"> <span id="l21" class="unselected">Tipos de Moneda</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Tipos de Cambio.htm" onclick="return LinkClick('22',false,true)" target="content" title=" Tipos de Cambio" onmousemove="window.status='Tipos de Cambio'"><img src="icons/11.gif" class="p"> <span id="l22" class="unselected">Tipos de Cambio</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Bancos.htm" onclick="return LinkClick('23',false,true)" target="content" title=" Bancos" onmousemove="window.status='Bancos'"><img src="icons/11.gif" class="p"> <span id="l23" class="unselected">Bancos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Cuenta Corriente.htm" onclick="return LinkClick('24',false,true)" target="content" title=" Cuenta Corriente" onmousemove="window.status='Cuenta Corriente'"><img src="icons/11.gif" class="p"> <span id="l24" class="unselected">Cuenta Corriente</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Tipos de Asiento.htm" onclick="return LinkClick('25',false,true)" target="content" title=" Tipos de Asiento" onmousemove="window.status='Tipos de Asiento'"><img src="icons/11.gif" class="p"> <span id="l25" class="unselected">Tipos de Asiento</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Balance CONASEV.htm" onclick="return LinkClick('26',false,true)" target="content" title=" Balance CONASEV" onmousemove="window.status='Balance CONASEV'"><img src="icons/11.gif" class="p"> <span id="l26" class="unselected">Balance CONASEV</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Parámetros Iniciales.htm" onclick="return LinkClick('27',false,true)" target="content" title=" Parámetros Iniciales" onmousemove="window.status='Parámetros Iniciales'"><img src="icons/11.gif" class="p"> <span id="l27" class="unselected">Parámetros Iniciales</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Operaciones  y Libro - Cuenta.htm" onclick="return LinkClick('28',false,true)" target="content" title=" Operaciones  y Libro - Cuenta" onmousemove="window.status='Operaciones  y Libro - Cuenta'"><img src="icons/11.gif" class="p"> <span id="l28" class="unselected">Operaciones  y Libro - Cuenta</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Cambio de Año de trabajo.htm" onclick="return LinkClick('29',false,true)" target="content" title=" Cambio de Año de trabajo" onmousemove="window.status='Cambio de Año de trabajo'"><img src="icons/11.gif" class="p"> <span id="l29" class="unselected">Cambio de Año de trabajo</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Salir del Sistema.htm" onclick="return LinkClick('30',false,true)" target="content" title=" Salir del Sistema" onmousemove="window.status='Salir del Sistema'"><img src="icons/11.gif" class="p"> <span id="l30" class="unselected">Salir del Sistema</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('31')"><img id="imgn31" src="icons/tplus.gif" class="p"></a><a href="scr/Ingresos.htm" onclick="return LinkClick('31',true,true)" onDblClick="return LinkDblClick('31')" target="content" title="Ingresos" onmousemove="window.status='Ingresos'"><img id="img31" src="icons/1.gif" class="p"> <span id="l31" class="unselected">Ingresos</span></a></nobr></div>
+<div id="d31" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('32')"><img id="imgn32" src="icons/tplus.gif" class="p"></a><a href="scr/Registro de Asientos Contables.htm" onclick="return LinkClick('32',true,true)" onDblClick="return LinkDblClick('32')" target="content" title="Registro de Asientos Contables" onmousemove="window.status='Registro de Asientos Contables'"><img id="img32" src="icons/1.gif" class="p"> <span id="l32" class="unselected">Registro de Asientos Contables</span></a></nobr></div>
+<div id="d32" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Documentos Provisionados.htm" onclick="return LinkClick('33',false,true)" target="content" title=" Documentos Provisionados" onmousemove="window.status='Documentos Provisionados'"><img src="icons/11.gif" class="p"> <span id="l33" class="unselected">Documentos Provisionados</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 01.html" onclick="return LinkClick('34',false,true)" target="content" title=" Ejemplo 01: Registro de Compra de Mercadería" onmousemove="window.status='Ejemplo 01: Registro de Compra de Mercadería'"><img src="icons/11.gif" class="p"> <span id="l34" class="unselected">Ejemplo 01: Registro de Compra de Mercadería</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 02.html" onclick="return LinkClick('35',false,true)" target="content" title=" Ejemplo 02: Registro de Compra de un Gasto por Servicio" onmousemove="window.status='Ejemplo 02: Registro de Compra de un Gasto por Servicio'"><img src="icons/11.gif" class="p"> <span id="l35" class="unselected">Ejemplo 02: Registro de Compra de un Gasto por Servicio</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 03.html" onclick="return LinkClick('36',false,true)" target="content" title=" Ejemplo 03: Registro de Ventas de Mercadería" onmousemove="window.status='Ejemplo 03: Registro de Ventas de Mercadería'"><img src="icons/11.gif" class="p"> <span id="l36" class="unselected">Ejemplo 03: Registro de Ventas de Mercadería</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 04.html" onclick="return LinkClick('37',false,true)" target="content" title=" Ejemplo 04: Devolución por Venta de  Mercadería (Nota Crédito)" onmousemove="window.status='Ejemplo 04: Devolución por Venta de  Mercadería (Nota Crédito)'"><img src="icons/11.gif" class="p"> <span id="l37" class="unselected">Ejemplo 04: Devolución por Venta de  Mercadería (Nota Crédito)</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 05.html" onclick="return LinkClick('38',false,true)" target="content" title=" Ejemplo 05: Registro de Diario: Provisión de la Planilla" onmousemove="window.status='Ejemplo 05: Registro de Diario: Provisión de la Planilla'"><img src="icons/11.gif" class="p"> <span id="l38" class="unselected">Ejemplo 05: Registro de Diario: Provisión de la Planilla</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 06.html" onclick="return LinkClick('39',false,true)" target="content" title=" Ejemplo 06: Registro de Diario: Canje de factura con letra" onmousemove="window.status='Ejemplo 06: Registro de Diario: Canje de factura con letra'"><img src="icons/11.gif" class="p"> <span id="l39" class="unselected">Ejemplo 06: Registro de Diario: Canje de factura con letra</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 07.html" onclick="return LinkClick('40',false,true)" target="content" title=" Ejemplo 07: Registro de pago de un comprobante" onmousemove="window.status='Ejemplo 07: Registro de pago de un comprobante'"><img src="icons/11.gif" class="p"> <span id="l40" class="unselected">Ejemplo 07: Registro de pago de un comprobante</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ejemplo 08.html" onclick="return LinkClick('41',false,true)" target="content" title=" Ejemplo 08: Registro de Cobranza de un comprobante" onmousemove="window.status='Ejemplo 08: Registro de Cobranza de un comprobante'"><img src="icons/11.gif" class="p"> <span id="l41" class="unselected">Ejemplo 08: Registro de Cobranza de un comprobante</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Ejemplo 09.html" onclick="return LinkClick('42',false,true)" target="content" title=" Ejemplo 09: Registro pago de una factura afecto a Retención" onmousemove="window.status='Ejemplo 09: Registro pago de una factura afecto a Retención'"><img src="icons/11.gif" class="p"> <span id="l42" class="unselected">Ejemplo 09: Registro pago de una factura afecto a Retención</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registro de Presupuesto Anual.htm" onclick="return LinkClick('43',false,true)" target="content" title=" Registro de Presupuesto Anual" onmousemove="window.status='Registro de Presupuesto Anual'"><img src="icons/11.gif" class="p"> <span id="l43" class="unselected">Registro de Presupuesto Anual</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registro Importación COA.htm" onclick="return LinkClick('44',false,true)" target="content" title=" Registro Importación COA" onmousemove="window.status='Registro Importación COA'"><img src="icons/11.gif" class="p"> <span id="l44" class="unselected">Registro Importación COA</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Registro Exportación COA.htm" onclick="return LinkClick('45',false,true)" target="content" title=" Registro Exportación COA" onmousemove="window.status='Registro Exportación COA'"><img src="icons/11.gif" class="p"> <span id="l45" class="unselected">Registro Exportación COA</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registros auxiliares.htm" onclick="return LinkClick('46',false,true)" target="content" title=" Registros auxiliares" onmousemove="window.status='Registros auxiliares'"><img src="icons/1.gif" class="p"> <span id="l46" class="unselected">Registros auxiliares</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('47')"><img id="imgn47" src="icons/tplus.gif" class="p"></a><a href="scr/Procesos.htm" onclick="return LinkClick('47',true,true)" onDblClick="return LinkDblClick('47')" target="content" title="Procesos" onmousemove="window.status='Procesos'"><img id="img47" src="icons/1.gif" class="p"> <span id="l47" class="unselected">Procesos</span></a></nobr></div>
+<div id="d47" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Generar Diferencia de Cambio Mensual.htm" onclick="return LinkClick('48',false,true)" target="content" title=" Generar Diferencia de Cambio Mensual" onmousemove="window.status='Generar Diferencia de Cambio Mensual'"><img src="icons/11.gif" class="p"> <span id="l48" class="unselected">Generar Diferencia de Cambio Mensual</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Cierre del Ejercicio.htm" onclick="return LinkClick('49',false,true)" target="content" title=" Cierre del Ejercicio" onmousemove="window.status='Cierre del Ejercicio'"><img src="icons/11.gif" class="p"> <span id="l49" class="unselected">Cierre del Ejercicio</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Asiento de Apertura.htm" onclick="return LinkClick('50',false,true)" target="content" title=" Asiento de Apertura" onmousemove="window.status='Asiento de Apertura'"><img src="icons/11.gif" class="p"> <span id="l50" class="unselected">Asiento de Apertura</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Asiento de Cierre Final.htm" onclick="return LinkClick('51',false,true)" target="content" title=" Asiento de Cierre Final" onmousemove="window.status='Asiento de Cierre Final'"><img src="icons/11.gif" class="p"> <span id="l51" class="unselected">Asiento de Cierre Final</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Generar Cierre Mensual.htm" onclick="return LinkClick('52',false,true)" target="content" title=" Generar Cierre Mensual" onmousemove="window.status='Generar Cierre Mensual'"><img src="icons/11.gif" class="p"> <span id="l52" class="unselected">Generar Cierre Mensual</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Proceso de Conversión de Moneda.htm" onclick="return LinkClick('53',false,true)" target="content" title=" Proceso de Conversión de Moneda" onmousemove="window.status='Proceso de Conversión de Moneda'"><img src="icons/11.gif" class="p"> <span id="l53" class="unselected">Proceso de Conversión de Moneda</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('54')"><img id="imgn54" src="icons/tplus.gif" class="p"></a><a href="scr/Conciliacion Bancaria.htm" onclick="return LinkClick('54',true,true)" onDblClick="return LinkDblClick('54')" target="content" title="Conciliacion Bancaria" onmousemove="window.status='Conciliacion Bancaria'"><img id="img54" src="icons/1.gif" class="p"> <span id="l54" class="unselected">Conciliacion Bancaria</span></a></nobr></div>
+<div id="d54" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registro de Extracto Bancario.htm" onclick="return LinkClick('55',false,true)" target="content" title=" Registro de Extracto Bancario" onmousemove="window.status='Registro de Extracto Bancario'"><img src="icons/11.gif" class="p"> <span id="l55" class="unselected">Registro de Extracto Bancario</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Reporte de Movimiento de Bancos.htm" onclick="return LinkClick('56',false,true)" target="content" title=" Reporte de Movimiento de Bancos" onmousemove="window.status='Reporte de Movimiento de Bancos'"><img src="icons/11.gif" class="p"> <span id="l56" class="unselected">Reporte de Movimiento de Bancos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Reporte de Cheques Emitidos.htm" onclick="return LinkClick('57',false,true)" target="content" title=" Reporte de Cheques Emitidos" onmousemove="window.status='Reporte de Cheques Emitidos'"><img src="icons/11.gif" class="p"> <span id="l57" class="unselected">Reporte de Cheques Emitidos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Reporte de Cheques Pendientes.htm" onclick="return LinkClick('58',false,true)" target="content" title=" Reporte de Cheques Pendientes" onmousemove="window.status='Reporte de Cheques Pendientes'"><img src="icons/11.gif" class="p"> <span id="l58" class="unselected">Reporte de Cheques Pendientes</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('59')"><img id="imgn59" src="icons/tplus.gif" class="p"></a><a href="scr/Reporte.htm" onclick="return LinkClick('59',true,true)" onDblClick="return LinkDblClick('59')" target="content" title="Reportes" onmousemove="window.status='Reportes'"><img id="img59" src="icons/1.gif" class="p"> <span id="l59" class="unselected">Reportes</span></a></nobr></div>
+<div id="d59" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('60')"><img id="imgn60" src="icons/tplus.gif" class="p"></a><a href="scr/Menu Libros.htm" onclick="return LinkClick('60',true,true)" onDblClick="return LinkDblClick('60')" target="content" title="Libros" onmousemove="window.status='Libros'"><img id="img60" src="icons/1.gif" class="p"> <span id="l60" class="unselected">Libros</span></a></nobr></div>
+<div id="d60" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Diario General.htm" onclick="return LinkClick('61',false,true)" target="content" title=" Diario General" onmousemove="window.status='Diario General'"><img src="icons/11.gif" class="p"> <span id="l61" class="unselected">Diario General</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Mayor General.htm" onclick="return LinkClick('62',false,true)" target="content" title=" Mayor General" onmousemove="window.status='Mayor General'"><img src="icons/11.gif" class="p"> <span id="l62" class="unselected">Mayor General</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Mayor General Analítico.htm" onclick="return LinkClick('63',false,true)" target="content" title=" Mayor General Analítico" onmousemove="window.status='Mayor General Analítico'"><img src="icons/11.gif" class="p"> <span id="l63" class="unselected">Mayor General Analítico</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Análisis de Cuenta.htm" onclick="return LinkClick('64',false,true)" target="content" title=" Análisis de Cuenta" onmousemove="window.status='Análisis de Cuenta'"><img src="icons/11.gif" class="p"> <span id="l64" class="unselected">Análisis de Cuenta</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Saldo por Cuenta.htm" onclick="return LinkClick('65',false,true)" target="content" title=" Saldo por Cuenta" onmousemove="window.status='Saldo por Cuenta'"><img src="icons/11.gif" class="p"> <span id="l65" class="unselected">Saldo por Cuenta</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('66')"><img id="imgn66" src="icons/tplus.gif" class="p"></a><a href="scr/Balances y EEFF.htm" onclick="return LinkClick('66',true,true)" onDblClick="return LinkDblClick('66')" target="content" title="Balances y EEFF" onmousemove="window.status='Balances y EEFF'"><img id="img66" src="icons/1.gif" class="p"> <span id="l66" class="unselected">Balances y EEFF</span></a></nobr></div>
+<div id="d66" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Balance de Comprobación.htm" onclick="return LinkClick('67',false,true)" target="content" title=" Balance de Comprobación" onmousemove="window.status='Balance de Comprobación'"><img src="icons/11.gif" class="p"> <span id="l67" class="unselected">Balance de Comprobación</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Balance de Suma de Saldos.htm" onclick="return LinkClick('68',false,true)" target="content" title=" Balance de Saldos" onmousemove="window.status='Balance de Saldos'"><img src="icons/11.gif" class="p"> <span id="l68" class="unselected">Balance de Saldos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Balance General y Resultados.htm" onclick="return LinkClick('69',false,true)" target="content" title=" Balance General y Resultados" onmousemove="window.status='Balance General y Resultados'"><img src="icons/11.gif" class="p"> <span id="l69" class="unselected">Balance General y Resultados</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Anexo al Libro de Inventarios y Balances.htm" onclick="return LinkClick('70',false,true)" target="content" title=" Anexo al Libro de Inventarios y Balances" onmousemove="window.status='Anexo al Libro de Inventarios y Balances'"><img src="icons/11.gif" class="p"> <span id="l70" class="unselected">Anexo al Libro de Inventarios y Balances</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registro de Compras y Ventas.htm" onclick="return LinkClick('71',false,true)" target="content" title=" Registro de Compras y Ventas" onmousemove="window.status='Registro de Compras y Ventas'"><img src="icons/11.gif" class="p"> <span id="l71" class="unselected">Registro de Compras y Ventas</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registro de Percepciones y Retenciones.htm" onclick="return LinkClick('72',false,true)" target="content" title=" Registro de Percepciones y Retenciones" onmousemove="window.status='Registro de Percepciones y Retenciones'"><img src="icons/11.gif" class="p"> <span id="l72" class="unselected">Registro de Percepciones y Retenciones</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Libro de Caja y Bancos.htm" onclick="return LinkClick('73',false,true)" target="content" title=" Libro de Caja y Bancos" onmousemove="window.status='Libro de Caja y Bancos'"><img src="icons/11.gif" class="p"> <span id="l73" class="unselected">Libro de Caja y Bancos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Reporte de Análisis por Entidades.htm" onclick="return LinkClick('74',false,true)" target="content" title=" Reporte de Análisis por Entidades" onmousemove="window.status='Reporte de Análisis por Entidades'"><img src="icons/11.gif" class="p"> <span id="l74" class="unselected">Reporte de Análisis por Entidades</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Reporte de Análisis por Libro.htm" onclick="return LinkClick('75',false,true)" target="content" title=" Reporte de Análisis por Libro" onmousemove="window.status='Reporte de Análisis por Libro'"><img src="icons/11.gif" class="p"> <span id="l75" class="unselected">Reporte de Análisis por Libro</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('76')"><img id="imgn76" src="icons/tplus.gif" class="p"></a><a href="scr/Reporte por Centro de Costos.htm" onclick="return LinkClick('76',true,true)" onDblClick="return LinkDblClick('76')" target="content" title="Centros de Costos" onmousemove="window.status='Centros de Costos'"><img id="img76" src="icons/1.gif" class="p"> <span id="l76" class="unselected">Centros de Costos</span></a></nobr></div>
+<div id="d76" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Análisis por Centro de Costos.htm" onclick="return LinkClick('77',false,true)" target="content" title=" Análisis por Centro de Costos" onmousemove="window.status='Análisis por Centro de Costos'"><img src="icons/11.gif" class="p"> <span id="l77" class="unselected">Análisis por Centro de Costos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Resumen por Centro de Costos.htm" onclick="return LinkClick('78',false,true)" target="content" title=" Resumen por Centro de Costos" onmousemove="window.status='Resumen por Centro de Costos'"><img src="icons/11.gif" class="p"> <span id="l78" class="unselected">Resumen por Centro de Costos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Resumen por Centro de Costos Mensual.htm" onclick="return LinkClick('79',false,true)" target="content" title=" Resumen por Centro de Costos Mensual" onmousemove="window.status='Resumen por Centro de Costos Mensual'"><img src="icons/11.gif" class="p"> <span id="l79" class="unselected">Resumen por Centro de Costos Mensual</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Reporte COA.htm" onclick="return LinkClick('80',false,true)" target="content" title=" Reporte COA" onmousemove="window.status='Reporte COA'"><img src="icons/11.gif" class="p"> <span id="l80" class="unselected">Reporte COA</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Reporte del DAOT.htm" onclick="return LinkClick('81',false,true)" target="content" title=" Reporte del DAOT" onmousemove="window.status='Reporte del DAOT'"><img src="icons/11.gif" class="p"> <span id="l81" class="unselected">Reporte del DAOT</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Reporte de Ejecución del Presupuesto.htm" onclick="return LinkClick('82',false,true)" target="content" title=" Reporte de Ejecución del Presupuesto" onmousemove="window.status='Reporte de Ejecución del Presupuesto'"><img src="icons/11.gif" class="p"> <span id="l82" class="unselected">Reporte de Ejecución del Presupuesto</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('83')"><img id="imgn83" src="icons/tplus.gif" class="p"></a><a href="scr/Gerencial.htm" onclick="return LinkClick('83',true,true)" onDblClick="return LinkDblClick('83')" target="content" title="Gerencial" onmousemove="window.status='Gerencial'"><img id="img83" src="icons/1.gif" class="p"> <span id="l83" class="unselected">Gerencial</span></a></nobr></div>
+<div id="d83" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Registro de Indicadores.htm" onclick="return LinkClick('84',false,true)" target="content" title=" Registro de Indicadores" onmousemove="window.status='Registro de Indicadores'"><img src="icons/11.gif" class="p"> <span id="l84" class="unselected">Registro de Indicadores</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Reporte de Ratios Financieros.htm" onclick="return LinkClick('85',false,true)" target="content" title=" Reporte de Ratios Financieros" onmousemove="window.status='Reporte de Ratios Financieros'"><img src="icons/11.gif" class="p"> <span id="l85" class="unselected">Reporte de Ratios Financieros</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><a href="#" onClick="return NodeClick('86')"><img id="imgn86" src="icons/tplus.gif" class="p"></a><a href="scr/Utilitarios.htm" onclick="return LinkClick('86',true,true)" onDblClick="return LinkDblClick('86')" target="content" title="Utilitarios" onmousemove="window.status='Utilitarios'"><img id="img86" src="icons/1.gif" class="p"> <span id="l86" class="unselected">Utilitarios</span></a></nobr></div>
+<div id="d86" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><a href="#" onClick="return NodeClick('87')"><img id="imgn87" src="icons/tplus.gif" class="p"></a><a href="scr/Datos.htm" onclick="return LinkClick('87',true,true)" onDblClick="return LinkDblClick('87')" target="content" title="Datos" onmousemove="window.status='Datos'"><img id="img87" src="icons/1.gif" class="p"> <span id="l87" class="unselected">Datos</span></a></nobr></div>
+<div id="d87" style="display:none"><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Exportar Datos.htm" onclick="return LinkClick('88',false,true)" target="content" title=" Exportar Datos" onmousemove="window.status='Exportar Datos'"><img src="icons/11.gif" class="p"> <span id="l88" class="unselected">Exportar Datos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Importar Datos.htm" onclick="return LinkClick('89',false,true)" target="content" title=" Importar Datos" onmousemove="window.status='Importar Datos'"><img src="icons/11.gif" class="p"> <span id="l89" class="unselected">Importar Datos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Ver Asientos Importados.htm" onclick="return LinkClick('90',false,true)" target="content" title=" Ver Asientos Importados" onmousemove="window.status='Ver Asientos Importados'"><img src="icons/11.gif" class="p"> <span id="l90" class="unselected">Ver Asientos Importados</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Auditoria de Asientos.htm" onclick="return LinkClick('91',false,true)" target="content" title=" Auditoria de Asientos" onmousemove="window.status='Auditoria de Asientos'"><img src="icons/11.gif" class="p"> <span id="l91" class="unselected">Auditoria de Asientos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Exportar COA.htm" onclick="return LinkClick('92',false,true)" target="content" title=" Exportar COA" onmousemove="window.status='Exportar COA'"><img src="icons/11.gif" class="p"> <span id="l92" class="unselected">Exportar COA</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Exportar DAOT.htm" onclick="return LinkClick('93',false,true)" target="content" title=" Exportar DAOT" onmousemove="window.status='Exportar DAOT'"><img src="icons/11.gif" class="p"> <span id="l93" class="unselected">Exportar DAOT</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Backup de la Base de Datos.htm" onclick="return LinkClick('94',false,true)" target="content" title=" Backup de la Base de Datos" onmousemove="window.status='Backup de la Base de Datos'"><img src="icons/11.gif" class="p"> <span id="l94" class="unselected">Backup de la Base de Datos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Restaurar la Base de Datos.htm" onclick="return LinkClick('95',false,true)" target="content" title=" Restaurar la Base de Datos" onmousemove="window.status='Restaurar la Base de Datos'"><img src="icons/11.gif" class="p"> <span id="l95" class="unselected">Restaurar la Base de Datos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Indexación de la Base de Datos.htm" onclick="return LinkClick('96',false,true)" target="content" title=" Indexación de la Base de Datos" onmousemove="window.status='Indexación de la Base de Datos'"><img src="icons/11.gif" class="p"> <span id="l96" class="unselected">Indexación de la Base de Datos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Actualizar Asientos de Destino.htm" onclick="return LinkClick('97',false,true)" target="content" title=" Actualizar Asientos de Destino" onmousemove="window.status='Actualizar Asientos de Destino'"><img src="icons/11.gif" class="p"> <span id="l97" class="unselected">Actualizar Asientos de Destino</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Actualizar Saldos.htm" onclick="return LinkClick('98',false,true)" target="content" title=" Actualizar Saldos" onmousemove="window.status='Actualizar Saldos'"><img src="icons/11.gif" class="p"> <span id="l98" class="unselected">Actualizar Saldos</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Apertura del Período Contable.htm" onclick="return LinkClick('99',false,true)" target="content" title=" Apertura del Período Contable" onmousemove="window.status='Apertura del Período Contable'"><img src="icons/11.gif" class="p"> <span id="l99" class="unselected">Apertura del Período Contable</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Mantenimiento de Empresas.htm" onclick="return LinkClick('100',false,true)" target="content" title=" Mantenimiento de Empresas" onmousemove="window.status='Mantenimiento de Empresas'"><img src="icons/11.gif" class="p"> <span id="l100" class="unselected">Mantenimiento de Empresas</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Mantenimiento de Usuario.htm" onclick="return LinkClick('101',false,true)" target="content" title=" Mantenimiento de Usuario" onmousemove="window.status='Mantenimiento de Usuario'"><img src="icons/11.gif" class="p"> <span id="l101" class="unselected">Mantenimiento de Usuario</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Mantenimiento de Usuario _ Empresa.htm" onclick="return LinkClick('102',false,true)" target="content" title=" Mantenimiento de Usuario / Empresa" onmousemove="window.status='Mantenimiento de Usuario / Empresa'"><img src="icons/11.gif" class="p"> <span id="l102" class="unselected">Mantenimiento de Usuario / Empresa</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/tshaped.gif" class="p"><a href="scr/Mantenimiento de Acceso al Sistema.htm" onclick="return LinkClick('103',false,true)" target="content" title=" Mantenimiento de Acceso al Sistema" onmousemove="window.status='Mantenimiento de Acceso al Sistema'"><img src="icons/11.gif" class="p"> <span id="l103" class="unselected">Mantenimiento de Acceso al Sistema</span></a></nobr></div>
+<div><nobr><img src="icons/blank.gif" class="p"><img src="icons/line.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Mantenimiento de Perfiles del Sistema.htm" onclick="return LinkClick('104',false,true)" target="content" title=" Mantenimiento de Perfiles del Sistema" onmousemove="window.status='Mantenimiento de Perfiles del Sistema'"><img src="icons/11.gif" class="p"> <span id="l104" class="unselected">Mantenimiento de Perfiles del Sistema</span></a></nobr></div>
+</div><div><nobr><img src="icons/blank.gif" class="p"><img src="icons/upangle.gif" class="p"><a href="scr/Ventanas.htm" onclick="return LinkClick('105',false,true)" target="content" title=" Ventanas" onmousemove="window.status='Ventanas'"><img src="icons/1.gif" class="p"> <span id="l105" class="unselected">Ventanas</span></a></nobr></div>
+</div><script>divlist = [5,6,10,15,31,32,47,54,59,60,66,76,83,86,87]</script>
+<script>get('loading').style.display='none';</script>
+</body>
+</html>

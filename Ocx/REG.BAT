@@ -1,0 +1,1 @@
+REGSVR32 p2sodbc.dll

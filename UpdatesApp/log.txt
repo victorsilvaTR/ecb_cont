@@ -1,0 +1,10 @@
+2025-07-15 12:20:31 -   Tarea [DecompressFile]: Succes
+2025-07-22 12:20:06 -   Tarea [Delete Folder]: Fail >  C:\TCS\ECBCont_Desarrollo_2.14.2.DE 26-05\UPDATES\MASTER\ECB-CONT_M_2.18.2_2
+2025-07-22 12:20:18 -   Tarea [Delete Folder]: Fail >  C:\TCS\ECBCont_Desarrollo_2.14.2.DE 26-05\UPDATES\MASTER\ECB-CONT_M_2.18.2_2
+2025-07-22 12:20:28 -   Tarea [DecompressFile]: Succes
+2025-07-22 15:21:16 -   Tarea [Delete Folder]: Fail >  C:\TCS\ECBCont_Desarrollo_2.14.2.DE 26-05\UPDATES\MASTER\ECB-CONT_M_2.18.2_2
+2025-07-22 15:21:21 -   Tarea [Delete Folder]: Fail >  C:\TCS\ECBCont_Desarrollo_2.14.2.DE 26-05\UPDATES\MASTER\ECB-CONT_M_2.18.2_2
+2025-07-22 15:24:28 -   Tarea [Delete Folder]: Fail >  C:\TCS\ECBCont_Desarrollo_2.14.2.DE 26-05\UPDATES\MASTER\ECB-CONT_M_2.18.2_2
+2025-07-22 15:24:32 -   Tarea [Delete Folder]: Fail >  C:\TCS\ECBCont_Desarrollo_2.14.2.DE 26-05\UPDATES\MASTER\ECB-CONT_M_2.18.2_2
+2025-07-22 15:24:34 -   Tarea [DecompressFile]: Succes
+2025-07-22 15:25:22 -   Tarea [Register Scripts]: Fail >  
